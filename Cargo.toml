@@ -1,0 +1,12 @@
+[package]
+name = "tarust"
+version = "0.1.0"
+authors = ["OmegaDracul <salimabdu008@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+flate2 = "1.0.6"
+tar = "0.4.21"
+clap = {version = "2.32", features = ["yaml"]}
+indicatif = "0.11.0"
+progress = "0.2"

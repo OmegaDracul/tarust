@@ -1,0 +1,15 @@
+name: tarust
+version: "0.01"
+author: Salim Hussani <salimabdu008@gmail.com>
+about: Compresses and Decompresses Tarballs
+args:
+    - process:
+        required: true
+        takes_value: true
+        index: 1
+        help: Choose whether to compress or decompress a file
+    - file:
+        required: true
+        takes_value: true
+        index: 2
+        help: Choose the file to compress or decompress
