@@ -21,13 +21,14 @@ use tar::Archive;
 // Clap Imports
 use clap::App;
 
+
+///////////////////////////////////////////////////
+///
+//// TODO: Remove all unused imports
+
 // Progress Bar and Spinner
 /* use indicatif::{ProgressBar, ProgressStyle};
 use pbr::{ProgressBar as PBar, Units}; */
-
-
-//// TODO: Remove all unused imports
-
 // For file sizes
 //use tar::Header;
 //#[macro_use]
@@ -40,7 +41,7 @@ use pbr::{ProgressBar as PBar, Units}; */
 //use std::path::Path;
 //use std::path::PathBuf;
 
-///////////////////////////////////////////
+////////////////////////////////////////////////////
 
 fn main() {
     // Indexes the arguments provided when tarust is called in the terminal
