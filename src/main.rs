@@ -1,13 +1,14 @@
 // External flate2 and tar crates for the compression
 extern crate flate2;
 extern crate tar;
-#[macro_use]
-extern crate clap;
 extern crate indicatif;
 extern crate progress;
+extern crate pbr;
+#[macro_use]
+extern crate clap;
 
 // Import for filesystem reading
-use std::fs::{File, metadata};
+use std::fs::{File};
 
 // Imports for Compression
 use flate2::write::GzEncoder;
@@ -17,19 +18,21 @@ use flate2::Compression;
 use flate2::read::GzDecoder;
 use tar::Archive;
 
-// For file sizes
-//use tar::Header;
-
 // Clap Imports
-//#[macro_use]
-//use clap::{Arg, App, SubCommand};
 use clap::App;
 
 // Progress Bar and Spinner
-use indicatif::{ProgressBar, ProgressStyle};
-//use std::{thread, time};
+/* use indicatif::{ProgressBar, ProgressStyle};
+use pbr::{ProgressBar as PBar, Units}; */
 
-// TODO: Remove all unused imports
+
+//// TODO: Remove all unused imports
+
+// For file sizes
+//use tar::Header;
+//#[macro_use]
+//use clap::{Arg, App, SubCommand};
+//use std::{thread, time};
 //use std::process;
 // Receiving user input
 //use std::env;
@@ -37,10 +40,12 @@ use indicatif::{ProgressBar, ProgressStyle};
 //use std::path::Path;
 //use std::path::PathBuf;
 
+///////////////////////////////////////////
 
 fn main() {
     // Indexes the arguments provided when tarust is called in the terminal
     //let args: Vec<String> = env::args().collect();
+
 
     let yaml = load_yaml!("cli.yaml");
     let matches = App::from_yaml(&yaml).get_matches();
@@ -54,15 +59,15 @@ fn main() {
     let process = matches.value_of("process").unwrap();
     let file = matches.value_of("file").unwrap();
 
-    let file_metadata = metadata(&file).unwrap();
-    let file_size = file_metadata.len();
+    /* let file_metadata = File::open(&file).unwrap().metadata().unwrap();
+    let file_size = file_metadata.len(); */
 
 
     // Designing the progress bar
-    let progress_bar = ProgressBar::new(file_size);
+    /* let progress_bar = ProgressBar::new(file_size);
     progress_bar.set_style(ProgressStyle::default_bar()
         .template("{spinner:.green} [{elapsed_precise}] [{bar:40.cyan/blue}] {bytes}/{total_bytes} ({eta})")
-        .progress_chars("#>-"));
+        .progress_chars("#>-")); */
 
     /* .unwrap_or_else(|err| {
         println!("Problem parsing arguments: {}", err);
@@ -70,7 +75,8 @@ fn main() {
     }) */
     //compress(args.clone());
 
-
+    /* let mut progress_bar = PBar::new(file_size);
+    progress_bar.set_units(Units::Bytes); */
 
     // TODO: Create proper terminal documentation instructions on using tarust
 
@@ -131,10 +137,11 @@ fn compress(_args: clap::ArgMatches) -> Result<(), std::io::Error> {
     let yaml = load_yaml!("cli.yaml");
     let matches = App::from_yaml(&yaml).get_matches();
 
+
     //let config = Config::new(matches);
+    //let _process = matches.value_of("process").unwrap();
 
 
-    let _process = matches.value_of("process").unwrap();
     let file = matches.value_of("file").unwrap();
 
 
@@ -145,10 +152,9 @@ fn compress(_args: clap::ArgMatches) -> Result<(), std::io::Error> {
     let mut tar = tar::Builder::new(encoded_file); // Creates the archive structure for the encoded_file
 
 
-
     // Recursively adds a directory and all its contents to the archive, giving the new archive
     // the name of the top-most directory on the tree
-    tar.append_dir_all(format!("{}", file), format!("{}", file))?;
+    tar.append_dir_all(format!("{}", file), format!("{}", file)).unwrap();
 
     // Returns a result
     Ok(())
@@ -165,9 +171,9 @@ fn decompress(_matches: clap::ArgMatches) -> Result<(), std::io::Error> {
 
 
     //let config = Config::new(matches);
+    //let _process = matches.value_of("process").unwrap();
 
 
-    let _process = matches.value_of("process").unwrap();
     let file = matches.value_of("file").unwrap();
 
     let path = format!("{}.tar.gz", file); // Name of the .tar.gz file
